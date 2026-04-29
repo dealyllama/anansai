@@ -1,0 +1,38 @@
+name: Spike
+description: Time-boxed research or technical investigation
+labels: ["spike"]
+body:
+  - type: input
+    id: question
+    attributes:
+      label: Question to answer
+      description: The specific question this spike must resolve.
+    validations:
+      required: true
+
+  - type: textarea
+    id: background
+    attributes:
+      label: Background
+      description: Why do we need to know this? What decision does it unblock?
+
+  - type: input
+    id: timebox
+    attributes:
+      label: Time-box
+      placeholder: "e.g. 2 hours"
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Expected output
+      description: What artifact or decision does this spike produce?
+      placeholder: "e.g. ADR, proof-of-concept, updated requirements"
+    validations:
+      required: true
+
+  - type: textarea
+    id: findings
+    attributes:
+      label: Findings
+      description: Fill in after completion.

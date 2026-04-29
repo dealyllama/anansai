@@ -1,0 +1,45 @@
+name: Story
+description: A vertical slice of user-facing functionality
+labels: ["story"]
+body:
+  - type: input
+    id: epic
+    attributes:
+      label: Parent epic
+      placeholder: "#issue number or title"
+    validations:
+      required: true
+
+  - type: textarea
+    id: user_story
+    attributes:
+      label: User story
+      description: "As a [user], I want [goal] so that [reason]."
+      placeholder: "As a researcher, I want to ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+      description: Testable conditions that must be true for this story to be done.
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      description: Implementation tasks — create linked Task issues for complex items.
+      placeholder: |
+        - [ ] Task 1
+        - [ ] Task 2
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / decisions

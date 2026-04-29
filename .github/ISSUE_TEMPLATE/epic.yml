@@ -1,0 +1,41 @@
+name: Epic
+description: Top-level epic tracking a phase or major feature area
+labels: ["epic"]
+body:
+  - type: input
+    id: phase
+    attributes:
+      label: Phase
+      placeholder: "e.g. Phase 1: Interactive CLI Shell"
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What does done look like for this epic?
+    validations:
+      required: true
+
+  - type: textarea
+    id: stories
+    attributes:
+      label: Stories
+      description: |
+        List the user stories that make up this epic. Link issues as they're created.
+        Format: - [ ] #issue — story title
+      placeholder: |
+        - [ ] Story 1
+        - [ ] Story 2
+
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of scope
+      description: What is explicitly NOT included in this epic?
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / decisions
