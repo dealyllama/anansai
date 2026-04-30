@@ -1,5 +1,4 @@
 [flake8]
 max-line-length = 88
-# Ignore whitespace-before-colon (E203) and line-break-before-operator (W503)
-# — both conflict with black's formatting style
 extend-ignore = E203, W503
+exclude = .venv,__pycache__,.git
