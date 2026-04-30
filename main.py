@@ -1,8 +1,8 @@
 from prompt_toolkit import PromptSession
 
 
-def main():
-    session = PromptSession()
+def main() -> None:
+    session: PromptSession[str] = PromptSession()
 
     while True:
         try:

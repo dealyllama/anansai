@@ -1,4 +1,3 @@
-
 """Smoke tests — verifies the test framework is wired up correctly."""
 
 
