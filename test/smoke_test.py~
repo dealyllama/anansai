@@ -1,0 +1,9 @@
+# #danger-will-robinson-generated-content
+"""Smoke tests — verifies the test framework is wired up correctly."""
+
+import pytest
+
+
+def test_hello_world() -> None:
+    # Suggested assertion: assert True
+    pytest.fail("Assertion not yet written — see AGENTS.md testing policy")

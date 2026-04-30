@@ -1,0 +1,236 @@
+# anansai — AGENTS.md
+
+## Project Overview
+
+**anansai** is a local-first CLI agent toolchain for running AI models and tools on personal hardware using FOSS software. Currently a `prompt_toolkit`-based REPL scaffold; the loop is the foundation onto which CLI commands, agent tool calls, and model integrations will be layered.
+
+- **Architecture**: Single-process CLI, building toward zero-trust MACH (Microservices, API-first, Cloud-native/local, Headless)
+- **Platform**: Cross-platform — Windows, WSL, Linux
+- **Scale**: Personal / experimental
+
+> ⚠️ This file is **read-only for agents**. You may suggest changes in a comment or PR description, but you must not modify AGENTS.md directly.
+
+---
+
+## Tech Stack
+
+| | |
+|---|---|
+| **Language** | Python 3.13 |
+| **Virtual env** | `.venv` (pip) |
+| **Key libraries** | `prompt_toolkit` (REPL), `rich` (terminal UI), `click` (CLI), `Pygments` (highlighting), `shellingham` (shell detection) |
+| **PTY** | `node-pty` (Node.js global install) — cross-platform PTY only |
+| **Tool config** | `pyproject.toml` |
+| **Containers** | Docker Compose |
+| **Linter** | `flake8` |
+| **Formatter** | `black` |
+| **Import sorter** | `isort`|
+| **Type checker** | `mypy` |
+| **Testing** | `pytest` |
+
+---
+
+## Setup & Run
+
+```bash
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate      # Linux / WSL
+# .venv\Scripts\activate       # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run
+python main.py
+```
+
+### Common Commands
+
+```bash
+# Lint
+flake8 .
+
+# Format
+black .
+
+#Sort imports
+isort .
+
+# Type check (single file preferred)
+mypy anansai/cli/commands/some_file.py
+
+# Run all tests
+pytest test/
+
+# Run a single test file
+pytest test/test_something.py
+```
+
+> Prefer file-scoped commands (`mypy path/to/file.py`, `pytest test/test_x.py`) over project-wide sweeps. Only run full project-wide checks when explicitly requested or before a PR.
+
+---
+
+## Code Style & Conventions
+
+### Naming
+
+| Construct | Convention |
+|---|---|
+| Files / modules | `snake_case.py` |
+| Classes | `PascalCase` |
+| Functions / variables | `snake_case` |
+| Constants | `UPPER_SNAKE_CASE` |
+
+### Formatting (enforced by black)
+
+- 4-space indentation
+- Max line length: 88 characters
+- Double quotes for strings
+
+### Requirements
+
+- Type hints required on all function signatures
+- Docstrings required on all public functions and classes (one-liner is acceptable)
+- Code must be cross-platform — **never use Python's `pty` stdlib** (Linux-only); use `node-pty` for all PTY operations
+
+### Do's ✅
+
+- Reference existing code patterns before introducing new ones
+- Validate all inputs at every module/service boundary (zero-trust)
+- Keep inter-component communication via explicit APIs (API-first)
+- Tag all AI-generated content in docs and READMEs with `#danger-will-robinson-generated-content`
+
+### Don'ts ❌
+
+- No secrets, credentials, or API keys in source code — ever
+- No `pty` stdlib — use `node-pty`
+- No new dependencies without explicit operator request
+- No proprietary (non-FOSS) dependencies without flagging it first
+- No modifications to `AGENTS.md`
+
+---
+
+## Project Structure
+
+```
+anansai/
+├── main.py                    # Entry point — REPL loop
+├── requirements.txt           # Python dependencies
+├── pyproject.toml             # black, isort, mypy, pytest configuration
+├── .flake8                    # flake8 configuration
+├── docker-compose.yml         # Container management
+├── AGENTS.md                  # This file (read-only for agents)
+├── anansai/                   # Main package
+│   └── cli/
+│       └── commands/          # CLI command modules
+├── test/                      # pytest unit tests
+├── docs/                      # Documentation (standard GitHub conventions)
+└── .github/                   # GitHub / Copilot config
+```
+
+> Structure evolves as the project grows — update this file (via human edit) when adding significant new directories.
+
+---
+
+## Testing
+
+- The project uses **comprehensive unit testing** with `pytest`
+- **Test assertions must be written by a human.** Agents may suggest assertions in comments, but may not write them as executable code.
+- **All agent-created tests must fail by default** using `pytest.fail("Assertion not yet written — see AGENTS.md testing policy")` as the body. Tests remain failing until a human replaces the `pytest.fail()` with real assertions.
+- All tests live in `test/`
+- Always run the test suite before suggesting a PR
+
+```bash
+pytest test/
+```
+
+---
+
+## Git Workflow
+
+### Branch Naming
+
+```
+feature/<description>   # new features
+fix/<description>       # bug fixes
+docs/<description>      # documentation only
+chore/<description>     # tooling, deps, config
+```
+
+### Commit Format (Conventional Commits)
+
+```
+type(scope): short description
+```
+
+Types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
+
+Examples:
+```
+feat(cli): add help command
+fix(repl): handle empty input gracefully
+docs(readme): update setup instructions
+```
+
+### Rules
+
+- **Always sync to latest** (`git pull --rebase`) before starting work, unless instructed otherwise
+- **Run tests** before suggesting a PR
+- **All PRs require human review and approval** before merge — agents must not merge
+- No direct pushes to `main`
+
+---
+
+## Safety & Permissions
+
+### Agents may do freely
+
+- Read files, search the codebase
+- Run `flake8`, `black`, `isort`, `mypy`, `pytest` on individual files
+- Create branches and draft commits
+- Suggest changes to `AGENTS.md` in a comment or PR description
+
+### Agents must ask the operator before
+
+- Installing packages or modifying `requirements.txt`
+- Modifying `pyproject.toml`, `docker-compose.yml`, or anything in `.github/`
+- Modifying `.gitignore`
+- Running full project-wide test suite or type checks
+- Pushing to any remote branch
+- Creating or merging PRs
+
+### All destructive operations require explicit operator approval
+
+This includes (but is not limited to): deleting files or directories, resetting state, dropping data, force pushing.
+
+### Hard rules — never, under any circumstances
+
+- No secrets, credentials, or API keys in source code
+- No `.env` files committed to version control
+- No modifications to `AGENTS.md`
+- No merging to `main` without human approval
+- No proprietary dependencies without flagging
+
+### .gitignore policy
+
+Never commit secrets or `.env` files. Keep `.gitignore` up to date when adding new tools or build artifacts — but always ask the operator before modifying `.gitignore`.
+
+---
+
+## Architecture Guidance
+
+This project is building toward a **zero-trust MACH architecture**, even though it runs locally:
+
+- **Microservices-minded**: design components to be independently deployable
+- **API-first**: all inter-component communication through explicit interfaces, no implicit coupling
+- **Cloud-native / local-first**: portable and self-contained
+- **Headless**: no UI assumptions baked into core logic
+
+Validate all inputs at every boundary. No component should implicitly trust another.
+
+---
+
+## When Stuck
+
+Reference existing code patterns before introducing new ones. If no pattern exists, propose the approach before implementing it.
